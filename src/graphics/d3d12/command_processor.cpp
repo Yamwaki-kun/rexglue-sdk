@@ -3828,6 +3828,25 @@ void D3D12CommandProcessor::UpdateSystemConstantValues(
       }
     }
   }
+  // Blend factors with min/max, which host blending ignores (ROV does its own
+  // blending). Only the source alpha source factor can be applied in the
+  // shader; the destination factor would need the destination color.
+  if (!edram_rov_used) {
+    for (uint32_t i = 0; i < 4; ++i) {
+      reg::RB_BLENDCONTROL blend_control;
+      blend_control.value = regs[reg::RB_BLENDCONTROL::rt_register_indices[i]];
+      if ((blend_control.color_comb_fcn == xenos::BlendOp::kMin ||
+           blend_control.color_comb_fcn == xenos::BlendOp::kMax) &&
+          blend_control.color_srcblend == xenos::BlendFactor::kSrcAlpha) {
+        flags |= DxbcShaderTranslator::kSysFlag_MinMaxColor0SrcAlpha << i;
+      }
+      if ((blend_control.alpha_comb_fcn == xenos::BlendOp::kMin ||
+           blend_control.alpha_comb_fcn == xenos::BlendOp::kMax) &&
+          blend_control.alpha_srcblend == xenos::BlendFactor::kSrcAlpha) {
+        flags |= DxbcShaderTranslator::kSysFlag_MinMaxAlpha0SrcAlpha << i;
+      }
+    }
+  }
   if (edram_rov_used && depth_stencil_enabled) {
     flags |= DxbcShaderTranslator::kSysFlag_ROVDepthStencil;
     if (normalized_depth_control.z_enable) {

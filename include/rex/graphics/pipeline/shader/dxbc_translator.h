@@ -237,6 +237,20 @@ class DxbcShaderTranslator : public ShaderTranslator {
     // should be safe at least temporarily).
     kSysFlag_ROVDepthStencilEarlyWrite_Shift,
 
+    // RTV path only. Host min/max blending ignores the blend factors, but
+    // Xenos applies them. When a render target blends with min/max and the
+    // source factor is the source alpha, the shader applies the factor itself
+    // before writing. Appended last so the shifts above stay as
+    // xenos_draw.hlsli expects them.
+    kSysFlag_MinMaxColor0SrcAlpha_Shift,
+    kSysFlag_MinMaxColor1SrcAlpha_Shift,
+    kSysFlag_MinMaxColor2SrcAlpha_Shift,
+    kSysFlag_MinMaxColor3SrcAlpha_Shift,
+    kSysFlag_MinMaxAlpha0SrcAlpha_Shift,
+    kSysFlag_MinMaxAlpha1SrcAlpha_Shift,
+    kSysFlag_MinMaxAlpha2SrcAlpha_Shift,
+    kSysFlag_MinMaxAlpha3SrcAlpha_Shift,
+
     kSysFlag_Count,
 
     kSysFlag_SharedMemoryIsUAV = 1u << kSysFlag_SharedMemoryIsUAV_Shift,
@@ -260,6 +274,8 @@ class DxbcShaderTranslator : public ShaderTranslator {
     kSysFlag_ROVDepthWrite = 1u << kSysFlag_ROVDepthWrite_Shift,
     kSysFlag_ROVStencilTest = 1u << kSysFlag_ROVStencilTest_Shift,
     kSysFlag_ROVDepthStencilEarlyWrite = 1u << kSysFlag_ROVDepthStencilEarlyWrite_Shift,
+    kSysFlag_MinMaxColor0SrcAlpha = 1u << kSysFlag_MinMaxColor0SrcAlpha_Shift,
+    kSysFlag_MinMaxAlpha0SrcAlpha = 1u << kSysFlag_MinMaxAlpha0SrcAlpha_Shift,
   };
   static_assert(kSysFlag_Count <= 32, "Too many flags in the system constants");
 

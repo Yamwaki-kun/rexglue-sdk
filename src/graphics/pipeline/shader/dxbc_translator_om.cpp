@@ -1548,6 +1548,21 @@ void DxbcShaderTranslator::CompletePixelShader_WriteToRTVs() {
              LoadSystemConstant(SystemConstants::Index::kColorExpBias,
                                 offsetof(SystemConstants, color_exp_bias) + sizeof(float) * i,
                                 dxbc::Src::kXXXX));
+    // Min/max blending with the source alpha as the source factor: Xenos
+    // multiplies by the factor before taking the min/max, the host does not,
+    // so apply it here. Color first, since it needs the unmodified alpha.
+    a_.OpAnd(dxbc::Dest::R(gamma_temp, 0b0001), LoadFlagsSystemConstant(),
+             dxbc::Src::LU(kSysFlag_MinMaxColor0SrcAlpha << i));
+    a_.OpIf(true, dxbc::Src::R(gamma_temp, dxbc::Src::kXXXX));
+    a_.OpMul(dxbc::Dest::R(system_temp_color, 0b0111), dxbc::Src::R(system_temp_color),
+             dxbc::Src::R(system_temp_color, dxbc::Src::kWWWW));
+    a_.OpEndIf();
+    a_.OpAnd(dxbc::Dest::R(gamma_temp, 0b0001), LoadFlagsSystemConstant(),
+             dxbc::Src::LU(kSysFlag_MinMaxAlpha0SrcAlpha << i));
+    a_.OpIf(true, dxbc::Src::R(gamma_temp, dxbc::Src::kXXXX));
+    a_.OpMul(dxbc::Dest::R(system_temp_color, 0b1000), dxbc::Src::R(system_temp_color),
+             dxbc::Src::R(system_temp_color, dxbc::Src::kWWWW));
+    a_.OpEndIf();
     if (gamma_render_target_as_unorm8_) {
       // Convert to gamma space - this is incorrect, since it must be done after
       // blending on the Xbox 360, but this is just one of many blending issues
