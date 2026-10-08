@@ -14,10 +14,13 @@
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <condition_variable>
 #include <deque>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -66,6 +69,11 @@ class D3D12CommandProcessor : public CommandProcessor {
     assert_true(submission_open_);
     return deferred_command_list_;
   }
+
+  // Blocks until the async submit thread has put every handed-off submission
+  // on the direct queue. Anything that touches the direct queue directly (tile
+  // mappings, queue signals) must call this first to keep queue order.
+  void AwaitAsyncSubmission();
 
   uint64_t GetCurrentSubmission() const { return submission_current_; }
   uint64_t GetCompletedSubmission() const { return submission_completed_; }
@@ -458,6 +466,23 @@ class D3D12CommandProcessor : public CommandProcessor {
   ID3D12GraphicsCommandList* command_list_ = nullptr;
   ID3D12GraphicsCommandList1* command_list_1_ = nullptr;
   DeferredCommandList deferred_command_list_;
+
+  // Async submission (d3d12_async_submission). EndSubmission swaps the
+  // recorded stream into async_command_list_ and this thread replays it into
+  // command_list_, executes and signals the fence, so the command processor
+  // thread can start the next submission meanwhile. At most one submission is
+  // in flight; swaps wait for it, so presentation sees a fully queued frame.
+  void StartAsyncSubmitThread();
+  void StopAsyncSubmitThread();
+  void AsyncSubmitThreadMain();
+  DeferredCommandList async_command_list_;
+  std::thread async_submit_thread_;
+  std::mutex async_submit_mutex_;
+  std::condition_variable async_submit_cv_;
+  bool async_submit_pending_ = false;
+  bool async_submit_exit_ = false;
+  ID3D12CommandAllocator* async_submit_allocator_ = nullptr;
+  uint64_t async_submit_fence_value_ = 0;
 
   bool debug_markers_enabled_ = false;
 

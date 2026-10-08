@@ -1182,6 +1182,7 @@ bool D3D12TextureCache::EnsureScaledResolveMemoryCommitted(uint32_t start_unscal
       continue;
     }
     auto direct_queue = provider.GetDirectQueue();
+    command_processor_.AwaitAsyncSubmission();
     D3D12_HEAP_DESC heap_desc = {};
     heap_desc.SizeInBytes = kScaledResolveHeapSize;
     heap_desc.Properties.Type = D3D12_HEAP_TYPE_DEFAULT;

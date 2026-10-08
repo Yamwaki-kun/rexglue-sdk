@@ -47,6 +47,12 @@ REXCVAR_DEFINE_BOOL(d3d12_submit_on_primary_buffer_end, true, "GPU/D3D12",
                     "Submit command list when PM4 primary buffer ends")
     .lifecycle(rex::cvar::Lifecycle::kHotReload);
 
+REXCVAR_DEFINE_BOOL(d3d12_async_submission, false, "GPU/D3D12",
+                    "Replay and execute finished submissions on a separate thread, overlapping "
+                    "it with command processing of the next submission. Gains the most together "
+                    "with d3d12_submit_on_primary_buffer_end. Experimental.")
+    .lifecycle(rex::cvar::Lifecycle::kRequiresRestart);
+
 namespace rex::graphics::d3d12 {
 
 // Generated with `xb buildshaders`.
@@ -62,7 +68,9 @@ namespace shaders {
 
 D3D12CommandProcessor::D3D12CommandProcessor(D3D12GraphicsSystem* graphics_system,
                                              system::KernelState* kernel_state)
-    : CommandProcessor(graphics_system, kernel_state), deferred_command_list_(*this) {
+    : CommandProcessor(graphics_system, kernel_state),
+      deferred_command_list_(*this),
+      async_command_list_(*this) {
   legacy_readback_memexport_cvar_name_ = "d3d12_readback_memexport";
 }
 D3D12CommandProcessor::~D3D12CommandProcessor() = default;
@@ -906,6 +914,10 @@ bool D3D12CommandProcessor::SetupContext() {
   // Optional - added in Creators Update (SDK 10.0.15063.0).
   command_list_->QueryInterface(IID_PPV_ARGS(&command_list_1_));
 
+  if (REXCVAR_GET(d3d12_async_submission)) {
+    StartAsyncSubmitThread();
+  }
+
   bindless_resources_used_ = REXCVAR_GET(d3d12_bindless) &&
                              provider.GetResourceBindingTier() >= D3D12_RESOURCE_BINDING_TIER_2;
 
@@ -1627,6 +1639,7 @@ bool D3D12CommandProcessor::SetupContext() {
 }
 
 void D3D12CommandProcessor::ShutdownContext() {
+  StopAsyncSubmitThread();
   AwaitAllQueueOperationsCompletion();
   InvalidateAllVertexBufferResidency();
   ShutdownOcclusionQueryResources();
@@ -3112,6 +3125,7 @@ void D3D12CommandProcessor::CheckSubmissionFence(uint64_t await_submission) {
     // submission, but just in case of a failure, or queue operations being done
     // outside of a submission, await explicitly.
     if (queue_operations_done_since_submission_signal_) {
+      AwaitAsyncSubmission();
       UINT64 fence_value = ++queue_operations_since_submission_fence_last_;
       ID3D12CommandQueue* direct_queue = GetD3D12Provider().GetDirectQueue();
       if (SUCCEEDED(direct_queue->Signal(queue_operations_since_submission_fence_, fence_value) &&
@@ -3423,12 +3437,27 @@ bool D3D12CommandProcessor::EndSubmission(bool is_swap) {
     // happens between Xenia submissions.
     ID3D12CommandAllocator* command_allocator =
         command_allocator_writable_first_->command_allocator;
-    command_allocator->Reset();
-    command_list_->Reset(command_allocator, nullptr);
-    deferred_command_list_.Execute(command_list_, command_list_1_);
-    command_list_->Close();
-    ID3D12CommandList* execute_command_lists[] = {command_list_};
-    direct_queue->ExecuteCommandLists(1, execute_command_lists);
+    const bool async_submit = async_submit_thread_.joinable();
+    if (async_submit) {
+      // The allocator stays in the submitted list below exactly as in the
+      // synchronous path; it is only reclaimed once the fence value the async
+      // thread signals has passed, so the thread is done with it by then.
+      std::unique_lock<std::mutex> lock(async_submit_mutex_);
+      async_submit_cv_.wait(lock, [this] { return !async_submit_pending_; });
+      async_command_list_.SwapStream(deferred_command_list_);
+      async_submit_allocator_ = command_allocator;
+      async_submit_fence_value_ = submission_current_;
+      async_submit_pending_ = true;
+      lock.unlock();
+      async_submit_cv_.notify_all();
+    } else {
+      command_allocator->Reset();
+      command_list_->Reset(command_allocator, nullptr);
+      deferred_command_list_.Execute(command_list_, command_list_1_);
+      command_list_->Close();
+      ID3D12CommandList* execute_command_lists[] = {command_list_};
+      direct_queue->ExecuteCommandLists(1, execute_command_lists);
+    }
     command_allocator_writable_first_->last_usage_submission = submission_current_;
     if (command_allocator_submitted_last_) {
       command_allocator_submitted_last_->next = command_allocator_writable_first_;
@@ -3442,7 +3471,16 @@ bool D3D12CommandProcessor::EndSubmission(bool is_swap) {
       command_allocator_writable_last_ = nullptr;
     }
 
-    direct_queue->Signal(submission_fence_, submission_current_++);
+    if (async_submit) {
+      ++submission_current_;
+      // The presenter puts its own commands for the guest output on the same
+      // queue right after a swap, so the frame must be fully queued by then.
+      if (is_swap) {
+        AwaitAsyncSubmission();
+      }
+    } else {
+      direct_queue->Signal(submission_fence_, submission_current_++);
+    }
 
     submission_open_ = false;
 
@@ -3494,6 +3532,65 @@ bool D3D12CommandProcessor::EndSubmission(bool is_swap) {
   }
 
   return true;
+}
+
+void D3D12CommandProcessor::StartAsyncSubmitThread() {
+  if (async_submit_thread_.joinable()) {
+    return;
+  }
+  async_submit_exit_ = false;
+  async_submit_pending_ = false;
+  async_submit_thread_ = std::thread([this] { AsyncSubmitThreadMain(); });
+  REXGPU_WARN("D3D12 async submission enabled (experimental)");
+}
+
+void D3D12CommandProcessor::StopAsyncSubmitThread() {
+  if (!async_submit_thread_.joinable()) {
+    return;
+  }
+  {
+    std::lock_guard<std::mutex> lock(async_submit_mutex_);
+    async_submit_exit_ = true;
+  }
+  async_submit_cv_.notify_all();
+  async_submit_thread_.join();
+}
+
+void D3D12CommandProcessor::AwaitAsyncSubmission() {
+  if (!async_submit_thread_.joinable()) {
+    return;
+  }
+  std::unique_lock<std::mutex> lock(async_submit_mutex_);
+  async_submit_cv_.wait(lock, [this] { return !async_submit_pending_; });
+}
+
+void D3D12CommandProcessor::AsyncSubmitThreadMain() {
+  SetThreadDescription(GetCurrentThread(), L"D3D12 Async Submit");
+  ID3D12CommandQueue* direct_queue = GetD3D12Provider().GetDirectQueue();
+  std::unique_lock<std::mutex> lock(async_submit_mutex_);
+  while (true) {
+    // A pending submission is always drained before exiting, so nothing that
+    // was handed off is dropped and the fence value is always signaled.
+    async_submit_cv_.wait(lock, [this] { return async_submit_pending_ || async_submit_exit_; });
+    if (!async_submit_pending_) {
+      break;
+    }
+    ID3D12CommandAllocator* command_allocator = async_submit_allocator_;
+    uint64_t fence_value = async_submit_fence_value_;
+    lock.unlock();
+
+    command_allocator->Reset();
+    command_list_->Reset(command_allocator, nullptr);
+    async_command_list_.Execute(command_list_, command_list_1_);
+    command_list_->Close();
+    ID3D12CommandList* execute_command_lists[] = {command_list_};
+    direct_queue->ExecuteCommandLists(1, execute_command_lists);
+    direct_queue->Signal(submission_fence_, fence_value);
+
+    lock.lock();
+    async_submit_pending_ = false;
+    async_submit_cv_.notify_all();
+  }
 }
 
 bool D3D12CommandProcessor::CanEndSubmissionImmediately() const {

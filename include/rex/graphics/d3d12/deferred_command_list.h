@@ -33,6 +33,9 @@ class DeferredCommandList {
                       size_t initial_size_bytes = 1_MiB);
 
   void Reset();
+  // Exchanges the recorded commands with another list (no copying), for
+  // handing a finished submission to another thread.
+  void SwapStream(DeferredCommandList& other) { command_stream_.swap(other.command_stream_); }
   void Execute(ID3D12GraphicsCommandList* command_list, ID3D12GraphicsCommandList1* command_list_1);
 
   D3D12_RECT* ClearDepthStencilViewAllocatedRects(D3D12_CPU_DESCRIPTOR_HANDLE depth_stencil_view,
