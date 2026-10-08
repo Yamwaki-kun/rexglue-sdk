@@ -53,6 +53,11 @@ REXCVAR_DEFINE_BOOL(d3d12_async_submission, false, "GPU/D3D12",
                     "with d3d12_submit_on_primary_buffer_end. Experimental.")
     .lifecycle(rex::cvar::Lifecycle::kRequiresRestart);
 
+REXCVAR_DEFINE_BOOL(d3d12_renderdoc_capture_key, false, "GPU/D3D12",
+                    "When running under RenderDoc, F11 captures exactly one guest frame, from "
+                    "the frame opening to the swap.")
+    .lifecycle(rex::cvar::Lifecycle::kRequiresRestart);
+
 namespace rex::graphics::d3d12 {
 
 // Generated with `xb buildshaders`.
@@ -916,6 +921,13 @@ bool D3D12CommandProcessor::SetupContext() {
 
   if (REXCVAR_GET(d3d12_async_submission)) {
     StartAsyncSubmitThread();
+  }
+
+  if (REXCVAR_GET(d3d12_renderdoc_capture_key)) {
+    renderdoc_api_ = ui::RenderDocAPI::CreateIfConnected();
+    if (renderdoc_api_) {
+      REXGPU_WARN("RenderDoc detected: F11 captures one guest frame");
+    }
   }
 
   bindless_resources_used_ = REXCVAR_GET(d3d12_bindless) &&
@@ -3346,6 +3358,13 @@ bool D3D12CommandProcessor::BeginSubmission(bool is_guest_command) {
   if (is_opening_frame) {
     frame_open_ = true;
 
+    // Low bit: pressed since the last call, so holding the key captures once.
+    if (renderdoc_api_ && !renderdoc_capturing_ && (GetAsyncKeyState(VK_F11) & 1)) {
+      renderdoc_api_->api_1_0_0()->StartFrameCapture(device, nullptr);
+      renderdoc_capturing_ = true;
+      REXGPU_WARN("RenderDoc: capturing guest frame {}", frame_current_);
+    }
+
     // Reset bindings that depend on the data stored in the pools.
     std::memset(current_float_constant_map_vertex_, 0, sizeof(current_float_constant_map_vertex_));
     std::memset(current_float_constant_map_pixel_, 0, sizeof(current_float_constant_map_pixel_));
@@ -3494,6 +3513,13 @@ bool D3D12CommandProcessor::EndSubmission(bool is_swap) {
       shared_memory_->SetSystemPageBlocksValidWithGpuDataWritten();
     }
     frame_open_ = false;
+    if (renderdoc_capturing_) {
+      // Swaps await async submission, so the whole frame is on the queue.
+      AwaitAsyncSubmission();
+      renderdoc_api_->api_1_0_0()->EndFrameCapture(provider.GetDevice(), nullptr);
+      renderdoc_capturing_ = false;
+      REXGPU_WARN("RenderDoc: guest frame capture ended");
+    }
     // Submission already closed now, so minus 1.
     closed_frame_submissions_[(frame_current_++) % kQueueFrames] = submission_current_ - 1;
 

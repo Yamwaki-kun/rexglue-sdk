@@ -44,6 +44,7 @@
 #include <rex/ui/d3d12/d3d12_provider.h>
 #include <rex/ui/d3d12/d3d12_upload_buffer_pool.h>
 #include <rex/ui/d3d12/d3d12_util.h>
+#include <rex/ui/renderdoc_api.h>
 
 namespace rex::graphics::d3d12 {
 
@@ -483,6 +484,13 @@ class D3D12CommandProcessor : public CommandProcessor {
   bool async_submit_exit_ = false;
   ID3D12CommandAllocator* async_submit_allocator_ = nullptr;
   uint64_t async_submit_fence_value_ = 0;
+
+  // Guest-frame-aligned RenderDoc capture (d3d12_renderdoc_capture_key). The
+  // host Present runs on the presenter's own schedule, so RenderDoc's own
+  // hotkey cuts captures in the middle of a guest frame; this one starts when
+  // a guest frame opens and ends when it closes.
+  std::unique_ptr<ui::RenderDocAPI> renderdoc_api_;
+  bool renderdoc_capturing_ = false;
 
   bool debug_markers_enabled_ = false;
 
