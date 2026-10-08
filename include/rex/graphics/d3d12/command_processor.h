@@ -491,6 +491,7 @@ class D3D12CommandProcessor : public CommandProcessor {
   // a guest frame opens and ends when it closes.
   std::unique_ptr<ui::RenderDocAPI> renderdoc_api_;
   bool renderdoc_capturing_ = false;
+  bool renderdoc_capture_key_was_down_ = false;
 
   bool debug_markers_enabled_ = false;
 

@@ -3358,8 +3358,13 @@ bool D3D12CommandProcessor::BeginSubmission(bool is_guest_command) {
   if (is_opening_frame) {
     frame_open_ = true;
 
-    // Low bit: pressed since the last call, so holding the key captures once.
-    if (renderdoc_api_ && !renderdoc_capturing_ && (GetAsyncKeyState(VK_F11) & 1)) {
+    // Edge-detect on the "currently down" bit. The "pressed since the last
+    // call" bit is shared with every other caller in the process (input
+    // polling), which consumes it first.
+    bool capture_key_down = renderdoc_api_ && (GetAsyncKeyState(VK_F11) & 0x8000) != 0;
+    bool capture_key_pressed = capture_key_down && !renderdoc_capture_key_was_down_;
+    renderdoc_capture_key_was_down_ = capture_key_down;
+    if (capture_key_pressed && !renderdoc_capturing_) {
       renderdoc_api_->api_1_0_0()->StartFrameCapture(device, nullptr);
       renderdoc_capturing_ = true;
       REXGPU_WARN("RenderDoc: capturing guest frame {}", frame_current_);
