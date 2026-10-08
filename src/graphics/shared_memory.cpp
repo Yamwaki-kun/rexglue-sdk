@@ -10,6 +10,7 @@
  */
 
 #include <algorithm>
+#include <atomic>
 #include <cstring>
 #include <utility>
 
@@ -337,13 +338,55 @@ void SharedMemory::UnlinkWatchRange(WatchRange* range) {
   watch_range_first_free_ = range;
 }
 
+bool SharedMemory::AreRangesValidLockFree(const std::pair<uint32_t, uint32_t>* ranges,
+                                          size_t count) const {
+  for (size_t r = 0; r < count; ++r) {
+    uint32_t start = ranges[r].first;
+    uint32_t length = ranges[r].second;
+    if (!length) {
+      continue;
+    }
+    if (start > kBufferSize || (kBufferSize - start) < length) {
+      // Let the locked path report the error.
+      return false;
+    }
+    uint32_t page_first = start >> page_size_log2_;
+    uint32_t page_last = (start + length - 1) >> page_size_log2_;
+    uint32_t block_first = page_first >> 6;
+    uint32_t block_last = page_last >> 6;
+    for (uint32_t i = block_first; i <= block_last; ++i) {
+      uint64_t needed = UINT64_MAX;
+      if (i == block_first) {
+        needed &= ~((uint64_t(1) << (page_first & 63)) - 1);
+      }
+      if (i == block_last && (page_last & 63) != 63) {
+        needed &= (uint64_t(1) << ((page_last & 63) + 1)) - 1;
+      }
+      uint64_t valid =
+          std::atomic_ref<uint64_t>(const_cast<uint64_t&>(system_page_flags_valid_[i]))
+              .load(std::memory_order_acquire);
+      if ((valid & needed) != needed) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 bool SharedMemory::RequestRanges(const std::pair<uint32_t, uint32_t>* ranges, size_t count) {
   if (ranges == nullptr || !count) {
     return true;
   }
 
+  // Most draws reuse data already uploaded. Valid pages are uploaded, thus
+  // also have their host memory allocated, so nothing else needs checking.
+  if (AreRangesValidLockFree(ranges, count)) {
+    return true;
+  }
+
   // Some texture or buffer is empty, for example - safe to draw in this case.
-  std::vector<std::pair<uint32_t, uint32_t>> merged_ranges;
+  std::vector<std::pair<uint32_t, uint32_t>>& merged_ranges = request_ranges_merged_;
+  merged_ranges.clear();
   merged_ranges.reserve(count);
   for (size_t i = 0; i < count; ++i) {
     uint32_t start = ranges[i].first;
