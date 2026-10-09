@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <chrono>
 #include <condition_variable>
 #include <deque>
 #include <memory>
@@ -374,7 +375,9 @@ class D3D12CommandProcessor : public CommandProcessor {
                                   uint32_t normalized_color_mask);
   bool UpdateBindings(const D3D12Shader* vertex_shader, const D3D12Shader* pixel_shader,
                       ID3D12RootSignature* root_signature, bool shared_memory_is_uav);
-  bool IssueCopy_ReadbackResolvePath();
+  bool IssueCopy_ReadbackResolvePath(ReadbackResolveMode forced_mode = ReadbackResolveMode::kDisabled,
+                                     bool already_resolved = false, uint32_t written_address = 0,
+                                     uint32_t written_length = 0);
   bool IssueDraw_MemexportReadbackFullPath(uint32_t total_size);
   bool IssueDraw_MemexportReadbackFastPath(uint32_t total_size);
 
@@ -448,6 +451,10 @@ class D3D12CommandProcessor : public CommandProcessor {
   bool queue_operations_done_since_submission_signal_ = false;
 
   bool frame_open_ = false;
+  // Time of the previous frame close, for gpu_slow_frame_log_ms.
+  std::chrono::steady_clock::time_point slow_frame_log_last_{};
+  uint32_t slow_frame_readback_count_ = 0;
+  uint64_t slow_frame_readback_us_ = 0;
   // Guest frame index, since some transient resources can be reused across
   // submissions. Values updated in the beginning of a frame.
   uint64_t frame_current_ = 1;

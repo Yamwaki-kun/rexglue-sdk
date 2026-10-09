@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <utility>
 
@@ -440,8 +441,16 @@ bool TextureCache::CommitPreparedTextureLoad(const PendingTextureLoad& pending_l
     }
   }
 
-  if (!LoadTextureDataFromResidentMemoryImpl(texture, pending_load.load_base,
-                                             pending_load.load_mips)) {
+  auto load_start = std::chrono::steady_clock::now();
+  bool loaded = LoadTextureDataFromResidentMemoryImpl(texture, pending_load.load_base,
+                                                      pending_load.load_mips);
+  uint64_t load_us = uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(
+                                  std::chrono::steady_clock::now() - load_start)
+                                  .count());
+  ++frame_stats_.loaded;
+  frame_stats_.load_us += load_us;
+  frame_stats_.load_max_us = std::max(frame_stats_.load_max_us, load_us);
+  if (!loaded) {
     return false;
   }
 
@@ -886,7 +895,14 @@ TextureCache::Texture* TextureCache::FindOrCreateTexture(TextureKey key) {
   // Create the texture and add it to the map.
   Texture* texture;
   {
+    auto create_start = std::chrono::steady_clock::now();
     std::unique_ptr<Texture> new_texture = CreateTexture(key);
+    uint64_t create_us = uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(
+                                      std::chrono::steady_clock::now() - create_start)
+                                      .count());
+    ++frame_stats_.created;
+    frame_stats_.create_us += create_us;
+    frame_stats_.create_max_us = std::max(frame_stats_.create_max_us, create_us);
     if (!new_texture) {
       key.LogAction("Failed to create");
       return nullptr;

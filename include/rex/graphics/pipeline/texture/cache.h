@@ -111,6 +111,21 @@ class TextureCache {
 
   virtual void RequestTextures(uint32_t used_texture_mask);
 
+  // Per-frame texture work, for the slow frame log (gpu_slow_frame_log_ms).
+  struct FrameStats {
+    uint32_t created = 0;
+    uint64_t create_us = 0;
+    uint64_t create_max_us = 0;
+    uint32_t loaded = 0;
+    uint64_t load_us = 0;
+    uint64_t load_max_us = 0;
+  };
+  FrameStats TakeFrameStats() {
+    FrameStats stats = frame_stats_;
+    frame_stats_ = FrameStats();
+    return stats;
+  }
+
   // "ActiveTexture" means as of the latest RequestTextures call.
 
   uint32_t GetActiveTextureHostSwizzle(uint32_t fetch_constant_index) const {
@@ -622,6 +637,8 @@ class TextureCache {
   // so need to recheck if textures aren't outdated, disregarding whether fetch
   // constants have been changed.
   std::atomic<bool> texture_became_outdated_{false};
+
+  FrameStats frame_stats_;
 
   std::array<TextureBinding, xenos::kTextureFetchConstantCount> texture_bindings_;
   // Bit vector with bits reset on fetch constant writes to avoid parsing fetch

@@ -10,6 +10,7 @@
  */
 
 #include <algorithm>
+#include <cstdlib>
 #include <cinttypes>
 #include <cmath>
 #include <cstring>
@@ -52,6 +53,15 @@ REXCVAR_DEFINE_STRING(readback_resolve, "none", "GPU",
                       " some: Read previous frame (delayed, copy on cache miss)\n"
                       " full: Immediate sync readback (accurate but stalls)")
     .allowed({"none", "fast", "some", "full"})
+    .lifecycle(rex::cvar::Lifecycle::kHotReload);
+
+REXCVAR_DEFINE_STRING(readback_resolve_ranges, "", "GPU",
+                      "Address-scoped resolve readback, for code that can't link against "
+                      "CommandProcessor::RequestResolveReadback: a list of "
+                      "physical_address:length pairs in hex, separated by ';' (for example "
+                      "\"0x07C48000:0x400000\"). Only resolves overlapping a range are copied "
+                      "back to guest memory, synchronously. Re-armed every frame while set; "
+                      "empty disables.")
     .lifecycle(rex::cvar::Lifecycle::kHotReload);
 
 REXCVAR_DEFINE_BOOL(readback_resolve_half_pixel_offset, false, "GPU",
@@ -168,6 +178,77 @@ void CommandProcessor::CallInThread(std::function<void()> fn) {
 void CommandProcessor::ClearCaches() {}
 
 void CommandProcessor::InvalidateGpuMemory() {}
+
+void CommandProcessor::RequestResolveReadback(uint32_t physical_address, uint32_t length,
+                                              uint32_t frames) {
+  if (!length || !frames) {
+    return;
+  }
+  physical_address &= 0x1FFFFFFF;
+  uint32_t end = uint32_t(std::min(uint64_t(physical_address) + length, uint64_t(0x20000000)));
+  std::lock_guard<std::mutex> lock(scoped_resolve_readback_mutex_);
+  for (ScopedResolveReadback& request : scoped_resolve_readbacks_) {
+    if (request.start == physical_address && request.end == end) {
+      request.frames_left = std::max(request.frames_left, frames);
+      return;
+    }
+  }
+  scoped_resolve_readbacks_.push_back({physical_address, end, frames});
+  scoped_resolve_readback_armed_.store(true, std::memory_order_release);
+}
+
+bool CommandProcessor::IsScopedResolveReadbackRequested(uint32_t start, uint32_t length) {
+  if (!length || !scoped_resolve_readback_armed_.load(std::memory_order_acquire)) {
+    return false;
+  }
+  start &= 0x1FFFFFFF;
+  uint64_t end = uint64_t(start) + length;
+  std::lock_guard<std::mutex> lock(scoped_resolve_readback_mutex_);
+  for (const ScopedResolveReadback& request : scoped_resolve_readbacks_) {
+    if (start < request.end && end > request.start) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void CommandProcessor::TickScopedResolveReadbacks() {
+  // Ranges requested through the cvar live for 2 frames from each tick, so they
+  // stay armed exactly as long as the cvar is set.
+  const std::string& ranges = REXCVAR_GET(readback_resolve_ranges);
+  if (!ranges.empty()) {
+    size_t position = 0;
+    while (position < ranges.size()) {
+      size_t next = ranges.find(';', position);
+      if (next == std::string::npos) {
+        next = ranges.size();
+      }
+      std::string entry = ranges.substr(position, next - position);
+      size_t colon = entry.find(':');
+      if (colon != std::string::npos) {
+        uint32_t start = uint32_t(std::strtoul(entry.substr(0, colon).c_str(), nullptr, 16));
+        uint32_t length = uint32_t(std::strtoul(entry.substr(colon + 1).c_str(), nullptr, 16));
+        RequestResolveReadback(start, length, 2);
+      }
+      position = next + 1;
+    }
+  }
+  if (!scoped_resolve_readback_armed_.load(std::memory_order_acquire)) {
+    return;
+  }
+  std::lock_guard<std::mutex> lock(scoped_resolve_readback_mutex_);
+  for (size_t i = 0; i < scoped_resolve_readbacks_.size();) {
+    if (--scoped_resolve_readbacks_[i].frames_left == 0) {
+      scoped_resolve_readbacks_[i] = scoped_resolve_readbacks_.back();
+      scoped_resolve_readbacks_.pop_back();
+    } else {
+      ++i;
+    }
+  }
+  if (scoped_resolve_readbacks_.empty()) {
+    scoped_resolve_readback_armed_.store(false, std::memory_order_release);
+  }
+}
 
 ReadbackResolveMode CommandProcessor::GetReadbackResolveMode(
     bool legacy_readback_resolve_enabled) const {

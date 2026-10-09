@@ -75,6 +75,7 @@ enum class GammaRampType {
 
 class CommandProcessor {
  public:
+  void RequestResolveReadback(uint32_t physical_address, uint32_t length, uint32_t frames);
   enum class SwapPostEffect {
     kNone,
     kFxaa,
@@ -227,6 +228,20 @@ class CommandProcessor {
 
   // Shared readback resolve mode with backend legacy-flag alias support.
   ReadbackResolveMode GetReadbackResolveMode(bool legacy_readback_resolve_enabled) const;
+
+  // Address-scoped resolve readback (RequestResolveReadback).
+  struct ScopedResolveReadback {
+    uint32_t start;
+    uint32_t end;  // Exclusive.
+    uint32_t frames_left;
+  };
+  std::mutex scoped_resolve_readback_mutex_;
+  std::vector<ScopedResolveReadback> scoped_resolve_readbacks_;
+  // Lock-free hint that the list may be non-empty, read on every resolve.
+  std::atomic<bool> scoped_resolve_readback_armed_{false};
+  bool IsScopedResolveReadbackRequested(uint32_t start, uint32_t length);
+  // Called once per closed guest frame.
+  void TickScopedResolveReadbacks();
   // Shared memexport readback enable state with backend legacy-flag override support.
   bool IsReadbackMemexportEnabled(bool legacy_backend_flag) const;
 

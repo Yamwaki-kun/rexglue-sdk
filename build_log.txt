@@ -1,212 +1,46 @@
 [0/2] Re-checking globbed directories...
-[1/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/util/draw.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/util/draw.cpp:18:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-      |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-6 warnings generated.
-[2/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/shared_memory.cpp.obj
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/shared_memory.cpp:284:62: warning: unused parameter 'offset_allocations' [-Wunused-parameter]
-  284 | bool SharedMemory::AllocateSparseHostGpuMemoryRange(uint32_t offset_allocations,
-      |                                                              ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/shared_memory.cpp:285:62: warning: unused parameter 'length_allocations' [-Wunused-parameter]
-  285 |                                                     uint32_t length_allocations) {
-      |                                                              ^
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/shared_memory.cpp:20:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/shared_memory.h:165:9: warning: private field 'memory_data_provider_handle_' is not used [-Wunused-private-field]
-  165 |   void* memory_data_provider_handle_ = nullptr;
-      |         ^
-3 warnings generated.
-[3/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/pipeline/texture/cache.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/texture/cache.cpp:22:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-      |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/texture/cache.cpp:709:51: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  709 |     const std::unique_lock<std::recursive_mutex>& global_lock) {
-      |                                                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/texture/cache.cpp:770:55: warning: unused parameter 'data' [-Wunused-parameter]
-  770 |                                  void* context, void* data, uint64_t argument,
-      |                                                       ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/texture/cache.cpp:771:39: warning: unused parameter 'invalidated_by_gpu' [-Wunused-parameter]
-  771 |                                  bool invalidated_by_gpu) {
-      |                                       ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/texture/cache.cpp:1123:51: warning: unused parameter 'global_lock' [-Wunused-parameter]
- 1123 |     const std::unique_lock<std::recursive_mutex>& global_lock, uint32_t address_first,
-      |                                                   ^
-10 warnings generated.
-[4/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/deferred_command_list.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/deferred_command_list.cpp:14:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-      |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/deferred_command_list.cpp:14:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
-  187 |         draw_extent_estimator_(register_file, memory),
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_resolution_scale_x_(draw_resolution_scale_x)
-  188 |         draw_resolution_scale_x_(draw_resolution_scale_x),
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_resolution_scale_y_(draw_resolution_scale_y)
-  189 |         draw_resolution_scale_y_(draw_resolution_scale_y) {
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_extent_estimator_(register_file, memory)
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/deferred_command_list.cpp:14:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
-   24 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesDefault = {D3D12_HEAP_TYPE_DEFAULT};
-      |                                                                                         ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:25:87: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
-   25 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesUpload = {D3D12_HEAP_TYPE_UPLOAD};
-      |                                                                                       ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:26:91: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
-   26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
-      |                                                                                           ^
-10 warnings generated.
-[5/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/graphics_system.cpp.obj
+[1/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/graphics_system.cpp.obj
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/graphics_system.cpp:14:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
       |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
       |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
       |                   ^
       |                   (void*)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/graphics_system.cpp:14:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
@@ -220,7 +54,7 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/rend
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |         draw_extent_estimator_(register_file, memory)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/graphics_system.cpp:14:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
@@ -233,62 +67,116 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:
    26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
       |                                                                                           ^
 10 warnings generated.
-[6/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/primitive_processor.cpp.obj
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/primitive_processor.cpp:270:43: warning: loop variable 'cache_map_entry' of type 'const std::pair<CacheKey, size_t> &' (aka 'const std::pair<CacheKey, unsigned long long> &') binds to a temporary constructed from type 'reference' (aka 'std::pair<const rex::graphics::PrimitiveProcessor::CacheKey, unsigned long long> &') [-Wrange-loop-construct]
-  270 |   for (const std::pair<CacheKey, size_t>& cache_map_entry : cache_map_) {
-      |                                           ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/primitive_processor.cpp:270:8: note: use non-reference type 'std::pair<CacheKey, size_t>' (aka 'std::pair<CacheKey, unsigned long long>') to make construction explicit or type 'const value_type &' (aka 'const std::pair<const rex::graphics::PrimitiveProcessor::CacheKey, unsigned long long> &') to prevent copying
-  270 |   for (const std::pair<CacheKey, size_t>& cache_map_entry : cache_map_) {
-      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/primitive_processor.cpp:1242:75: warning: unused parameter 'index_transform' [-Wunused-parameter]
- 1242 |                                          const PassthroughIndexTransform& index_transform) {
-      |                                                                           ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/primitive_processor.cpp:1252:75: warning: unused parameter 'index_transform' [-Wunused-parameter]
- 1252 |                                          const PassthroughIndexTransform& index_transform) {
-      |                                                                           ^
-3 warnings generated.
-[7/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/primitive_processor.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/primitive_processor.cpp:18:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+[2/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/deferred_command_list.cpp.obj
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/deferred_command_list.cpp:14:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
       |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
       |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/deferred_command_list.cpp:14:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
+  187 |         draw_extent_estimator_(register_file, memory),
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |         draw_resolution_scale_x_(draw_resolution_scale_x)
+  188 |         draw_resolution_scale_x_(draw_resolution_scale_x),
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |         draw_resolution_scale_y_(draw_resolution_scale_y)
+  189 |         draw_resolution_scale_y_(draw_resolution_scale_y) {
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |         draw_extent_estimator_(register_file, memory)
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/deferred_command_list.cpp:14:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
+   24 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesDefault = {D3D12_HEAP_TYPE_DEFAULT};
+      |                                                                                         ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:25:87: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
+   25 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesUpload = {D3D12_HEAP_TYPE_UPLOAD};
+      |                                                                                       ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:26:91: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
+   26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
+      |                                                                                           ^
+10 warnings generated.
+[3/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/primitive_processor.cpp.obj
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/primitive_processor.cpp:18:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+      |                                                     ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+      |                                                     ^
+      |                                                     (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
       |                   ^
       |                   (void*)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/primitive_processor.cpp:18:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
@@ -302,7 +190,7 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/rend
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |         draw_extent_estimator_(register_file, memory)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/primitive_processor.cpp:18:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
@@ -315,96 +203,48 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:
    26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
       |                                                                                           ^
 10 warnings generated.
-[8/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/pipeline/shader/dxbc_translator_om.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/shader/dxbc_translator_om.cpp:16:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
-  187 |         draw_extent_estimator_(register_file, memory),
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_resolution_scale_x_(draw_resolution_scale_x)
-  188 |         draw_resolution_scale_x_(draw_resolution_scale_x),
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_resolution_scale_y_(draw_resolution_scale_y)
-  189 |         draw_resolution_scale_y_(draw_resolution_scale_y) {
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_extent_estimator_(register_file, memory)
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/pipeline/shader/dxbc_translator_om.cpp:18:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-      |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-7 warnings generated.
-[9/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/shared_memory.cpp.obj
+[4/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/shared_memory.cpp.obj
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/shared_memory.cpp:18:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
       |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
       |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
       |                   ^
       |                   (void*)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/shared_memory.cpp:18:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
@@ -418,7 +258,7 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/rend
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |         draw_extent_estimator_(register_file, memory)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/shared_memory.cpp:18:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
@@ -431,48 +271,48 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:
    26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
       |                                                                                           ^
 10 warnings generated.
-[10/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/texture_cache.cpp.obj
+[5/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/texture_cache.cpp.obj
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:22:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
       |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
       |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
       |                   ^
       |                   (void*)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:22:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
@@ -486,7 +326,7 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/rend
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |         draw_extent_estimator_(register_file, memory)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:22:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
@@ -498,56 +338,148 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:26:91: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
    26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
       |                                                                                           ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:1853:28: warning: variable 'host_slice_size_base' is uninitialized when used here [-Wuninitialized]
- 1853 |         uint32_t(is_base ? host_slice_size_base : host_slice_sizes_mips[level]);
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:1965:28: warning: variable 'host_slice_size_base' is uninitialized when used here [-Wuninitialized]
+ 1965 |         uint32_t(is_base ? host_slice_size_base : host_slice_sizes_mips[level]);
       |                            ^~~~~~~~~~~~~~~~~~~~
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:1639:30: note: initialize the variable 'host_slice_size_base' to silence this warning
- 1639 |   UINT64 host_slice_size_base;
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/texture_cache.cpp:1751:30: note: initialize the variable 'host_slice_size_base' to silence this warning
+ 1751 |   UINT64 host_slice_size_base;
       |                              ^
       |                               = 0
 11 warnings generated.
-[11/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/pipeline_cache.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/pipeline_cache.cpp:33:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+[6/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/command_processor.cpp.obj
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:23:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
       |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
       |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:23:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
+  187 |         draw_extent_estimator_(register_file, memory),
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |         draw_resolution_scale_x_(draw_resolution_scale_x)
+  188 |         draw_resolution_scale_x_(draw_resolution_scale_x),
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |         draw_resolution_scale_y_(draw_resolution_scale_y)
+  189 |         draw_resolution_scale_y_(draw_resolution_scale_y) {
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |         draw_extent_estimator_(register_file, memory)
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:23:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
+   24 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesDefault = {D3D12_HEAP_TYPE_DEFAULT};
+      |                                                                                         ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:25:87: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
+   25 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesUpload = {D3D12_HEAP_TYPE_UPLOAD};
+      |                                                                                       ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:26:91: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
+   26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
+      |                                                                                           ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:190:48: warning: lambda capture 'kQueryFinished' is not required to be captured for this use [-Wunused-lambda-capture]
+  190 |   auto write_fallback_result = [sample_counts, kQueryFinished]() -> bool {
+      |                                              ~~^~~~~~~~~~~~~~
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:1924:48: warning: unused parameter 'frontbuffer_ptr' [-Wunused-parameter]
+ 1924 | void D3D12CommandProcessor::IssueSwap(uint32_t frontbuffer_ptr, uint32_t frontbuffer_width,
+      |                                                ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2296:83: warning: unused parameter 'guest_address' [-Wunused-parameter]
+ 2296 | Shader* D3D12CommandProcessor::LoadShader(xenos::ShaderType shader_type, uint32_t guest_address,
+      |                                                                                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2301:60: warning: unused parameter 'primitive_type' [-Wunused-parameter]
+ 2301 | bool D3D12CommandProcessor::IssueDraw(xenos::PrimitiveType primitive_type, uint32_t index_count,
+      |                                                            ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2301:85: warning: unused parameter 'index_count' [-Wunused-parameter]
+ 2301 | bool D3D12CommandProcessor::IssueDraw(xenos::PrimitiveType primitive_type, uint32_t index_count,
+      |                                                                                     ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2302:56: warning: unused parameter 'index_buffer_info' [-Wunused-parameter]
+ 2302 |                                       IndexBufferInfo* index_buffer_info,
+      |                                                        ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2303:44: warning: unused parameter 'major_mode_explicit' [-Wunused-parameter]
+ 2303 |                                       bool major_mode_explicit) {
+      |                                            ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:5109:14: warning: unused parameter 'sample_count_address' [-Wunused-parameter]
+ 5109 |     uint32_t sample_count_address, xenos::xe_gpu_depth_sample_counts* sample_counts) {
+      |              ^
+18 warnings generated.
+[7/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/pipeline_cache.cpp.obj
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/pipeline_cache.cpp:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+      |                                                     ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+      |                                                     ^
+      |                                                     (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
       |                   ^
       |                   (void*)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/pipeline_cache.cpp:33:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
@@ -561,7 +493,7 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/rend
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |         draw_extent_estimator_(register_file, memory)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/pipeline_cache.cpp:33:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
@@ -580,140 +512,48 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/pipeline_cache.
   105 |     depth_only_pixel_shader_ = std::move(shader_translator_->CreateDepthOnlyPixelShader());
       |                                ^~~~~~~~~~                                                ~
 11 warnings generated.
-[12/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/command_processor.cpp.obj
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:22:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
-      |                                                     ^
-      |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-      |                   (void*)
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:22:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
-  187 |         draw_extent_estimator_(register_file, memory),
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_resolution_scale_x_(draw_resolution_scale_x)
-  188 |         draw_resolution_scale_x_(draw_resolution_scale_x),
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_resolution_scale_y_(draw_resolution_scale_y)
-  189 |         draw_resolution_scale_y_(draw_resolution_scale_y) {
-      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |         draw_extent_estimator_(register_file, memory)
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:22:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
-   24 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesDefault = {D3D12_HEAP_TYPE_DEFAULT};
-      |                                                                                         ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:25:87: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
-   25 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesUpload = {D3D12_HEAP_TYPE_UPLOAD};
-      |                                                                                       ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:26:91: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
-   26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
-      |                                                                                           ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:185:48: warning: lambda capture 'kQueryFinished' is not required to be captured for this use [-Wunused-lambda-capture]
-  185 |   auto write_fallback_result = [sample_counts, kQueryFinished]() -> bool {
-      |                                              ~~^~~~~~~~~~~~~~
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:1919:48: warning: unused parameter 'frontbuffer_ptr' [-Wunused-parameter]
- 1919 | void D3D12CommandProcessor::IssueSwap(uint32_t frontbuffer_ptr, uint32_t frontbuffer_width,
-      |                                                ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2291:83: warning: unused parameter 'guest_address' [-Wunused-parameter]
- 2291 | Shader* D3D12CommandProcessor::LoadShader(xenos::ShaderType shader_type, uint32_t guest_address,
-      |                                                                                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2296:60: warning: unused parameter 'primitive_type' [-Wunused-parameter]
- 2296 | bool D3D12CommandProcessor::IssueDraw(xenos::PrimitiveType primitive_type, uint32_t index_count,
-      |                                                            ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2296:85: warning: unused parameter 'index_count' [-Wunused-parameter]
- 2296 | bool D3D12CommandProcessor::IssueDraw(xenos::PrimitiveType primitive_type, uint32_t index_count,
-      |                                                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2297:56: warning: unused parameter 'index_buffer_info' [-Wunused-parameter]
- 2297 |                                       IndexBufferInfo* index_buffer_info,
-      |                                                        ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:2298:44: warning: unused parameter 'major_mode_explicit' [-Wunused-parameter]
- 2298 |                                       bool major_mode_explicit) {
-      |                                            ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/command_processor.cpp:5075:14: warning: unused parameter 'sample_count_address' [-Wunused-parameter]
- 5075 |     uint32_t sample_count_address, xenos::xe_gpu_depth_sample_counts* sample_counts) {
-      |              ^
-18 warnings generated.
-[13/15] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/render_target_cache.cpp.obj
+[8/10] Building CXX object src/graphics/CMakeFiles/rexgpu-xenos.dir/RelWithDebInfo/d3d12/render_target_cache.cpp.obj
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/render_target_cache.cpp:26:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:27:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:24:
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/texture_cache.h:25:
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:167:53: note: explicitly cast the pointer to silence this warning
-  167 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:182:53: note: explicitly cast the pointer to silence this warning
+  182 |     TextureKey(const TextureKey& key) { std::memcpy(this, &key, sizeof(*this)); }
       |                                                     ^
       |                                                     (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  169 |       std::memcpy(this, &key, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: warning: first argument in call to 'memcpy' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:169:19: note: explicitly cast the pointer to silence this warning
-  169 |       std::memcpy(this, &key, sizeof(*this));
-      |                   ^
-      |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
-  174 |       std::memset(this, 0, sizeof(*this));
-      |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:174:19: note: explicitly cast the pointer to silence this warning
-  174 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:184:19: note: explicitly cast the pointer to silence this warning
+  184 |       std::memcpy(this, &key, sizeof(*this));
       |                   ^
       |                   (void*)
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:223:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  223 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:226:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
-  226 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
-      |                                                                      ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureKey' [-Wnontrivial-memcall]
+  189 |       std::memset(this, 0, sizeof(*this));
       |                   ^
-C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:469:19: note: explicitly cast the pointer to silence this warning
-  469 |       std::memset(this, 0, sizeof(*this));
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:189:19: note: explicitly cast the pointer to silence this warning
+  189 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+      |                   (void*)
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:238:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  238 |     bool base_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:241:70: warning: unused parameter 'global_lock' [-Wunused-parameter]
+  241 |     bool mips_outdated(const std::unique_lock<std::recursive_mutex>& global_lock) const {
+      |                                                                      ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: warning: first argument in call to 'memset' is a pointer to non-trivially copyable type 'rex::graphics::TextureCache::TextureBinding' [-Wnontrivial-memcall]
+  484 |       std::memset(this, 0, sizeof(*this));
+      |                   ^
+C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/texture/cache.h:484:19: note: explicitly cast the pointer to silence this warning
+  484 |       std::memset(this, 0, sizeof(*this));
       |                   ^
       |                   (void*)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/render_target_cache.cpp:26:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:29:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/render_target/cache.h:187:9: warning: field 'draw_extent_estimator_' will be initialized after field 'draw_resolution_scale_x_' [-Wreorder-ctor]
@@ -727,7 +567,7 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/pipeline/rend
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |         draw_extent_estimator_(register_file, memory)
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/src/graphics/d3d12/render_target_cache.cpp:26:
-In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:32:
+In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/command_processor.h:33:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/pipeline_cache.h:29:
 In file included from C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/graphics/d3d12/render_target_cache.h:36:
 C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:24:89: warning: missing field 'CPUPageProperty' initializer [-Wmissing-field-initializers]
@@ -740,4 +580,4 @@ C:/Users/arnaldo/Desktop/projetos/rexglue-src/include\rex/ui/d3d12/d3d12_util.h:
    26 | inline constexpr D3D12_HEAP_PROPERTIES kHeapPropertiesReadback = {D3D12_HEAP_TYPE_READBACK};
       |                                                                                           ^
 10 warnings generated.
-[14/15] Linking CXX shared library C:\Users\arnaldo\Desktop\projetos\rexglue-src\out\win-amd64\RelWithDebInfo\rexgpu-xenosrd.dll
+[9/10] Linking CXX shared library C:\Users\arnaldo\Desktop\projetos\rexglue-src\out\win-amd64\RelWithDebInfo\rexgpu-xenosrd.dll

@@ -10,6 +10,7 @@
  */
 
 #include <algorithm>
+#include <chrono>
 #include <cstdarg>
 #include <cstring>
 #include <sstream>
@@ -46,6 +47,10 @@ REXCVAR_DEFINE_BOOL(d3d12_readback_resolve, false, "GPU/D3D12",
 REXCVAR_DEFINE_BOOL(d3d12_submit_on_primary_buffer_end, true, "GPU/D3D12",
                     "Submit command list when PM4 primary buffer ends")
     .lifecycle(rex::cvar::Lifecycle::kHotReload);
+
+REXCVAR_DEFINE_INT32(gpu_slow_frame_log_ms, 0, "GPU",
+                     "Log a warning with the texture cache work of every guest frame that "
+                     "took at least this many milliseconds between swaps. 0 disables.");
 
 REXCVAR_DEFINE_BOOL(d3d12_async_submission, false, "GPU/D3D12",
                     "Replay and execute finished submissions on a separate thread, overlapping "
@@ -2905,16 +2910,34 @@ bool D3D12CommandProcessor::IssueCopy() {
   ReadbackResolveMode readback_mode = GetReadbackResolveMode(REXCVAR_GET(d3d12_readback_resolve));
   if (readback_mode == ReadbackResolveMode::kDisabled) {
     uint32_t written_address, written_length;
-    return render_target_cache_->Resolve(*memory_, *shared_memory_, *texture_cache_,
-                                         written_address, written_length);
+    if (!render_target_cache_->Resolve(*memory_, *shared_memory_, *texture_cache_,
+                                       written_address, written_length)) {
+      return false;
+    }
+    if (IsScopedResolveReadbackRequested(written_address, written_length)) {
+      // Only this resolve is read back, synchronously, so the CPU sees it now.
+      ++slow_frame_readback_count_;
+      return IssueCopy_ReadbackResolvePath(ReadbackResolveMode::kFull, true, written_address,
+                                           written_length);
+    }
+    return true;
   }
-  return IssueCopy_ReadbackResolvePath();
+  auto readback_start = std::chrono::steady_clock::now();
+  bool readback_result = IssueCopy_ReadbackResolvePath();
+  ++slow_frame_readback_count_;
+  slow_frame_readback_us_ += uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(
+                                         std::chrono::steady_clock::now() - readback_start)
+                                         .count());
+  return readback_result;
 }
 
-bool D3D12CommandProcessor::IssueCopy_ReadbackResolvePath() {
-  uint32_t written_address, written_length;
-  if (!render_target_cache_->Resolve(*memory_, *shared_memory_, *texture_cache_, written_address,
-                                     written_length)) {
+bool D3D12CommandProcessor::IssueCopy_ReadbackResolvePath(ReadbackResolveMode forced_mode,
+                                                          bool already_resolved,
+                                                          uint32_t written_address,
+                                                          uint32_t written_length) {
+  if (!already_resolved &&
+      !render_target_cache_->Resolve(*memory_, *shared_memory_, *texture_cache_,
+                                     written_address, written_length)) {
     return false;
   }
 
@@ -3094,7 +3117,7 @@ bool D3D12CommandProcessor::IssueCopy_ReadbackResolvePath() {
                                                written_address, written_length);
   }
 
-  ReadbackResolveMode readback_mode = GetReadbackResolveMode(REXCVAR_GET(d3d12_readback_resolve));
+  ReadbackResolveMode readback_mode = forced_mode != ReadbackResolveMode::kDisabled ? forced_mode : GetReadbackResolveMode(REXCVAR_GET(d3d12_readback_resolve));
   bool use_delayed_sync =
       readback_mode == ReadbackResolveMode::kFast || readback_mode == ReadbackResolveMode::kSome;
   uint32_t read_index = write_index;
@@ -3521,6 +3544,30 @@ bool D3D12CommandProcessor::EndSubmission(bool is_swap) {
     }
     if (shared_memory_) {
       shared_memory_->EndFrameHotPages();
+    }
+    TickScopedResolveReadbacks();
+    {
+      // Slow frame log: what the texture cache did in a frame that took long.
+      auto now = std::chrono::steady_clock::now();
+      TextureCache::FrameStats tex_stats = texture_cache_->TakeFrameStats();
+      int32_t threshold_ms = REXCVAR_GET(gpu_slow_frame_log_ms);
+      if (threshold_ms > 0 && slow_frame_log_last_.time_since_epoch().count() != 0) {
+        uint64_t frame_us = uint64_t(
+            std::chrono::duration_cast<std::chrono::microseconds>(now - slow_frame_log_last_)
+                .count());
+        if (frame_us >= uint64_t(threshold_ms) * 1000) {
+          REXGPU_WARN(
+              "Slow frame {:.1f} ms: textures created {} ({:.1f} ms, max {:.1f}), loaded {} "
+              "({:.1f} ms, max {:.1f}), readback resolves {} ({:.1f} ms)",
+              frame_us / 1000.0, tex_stats.created, tex_stats.create_us / 1000.0,
+              tex_stats.create_max_us / 1000.0, tex_stats.loaded, tex_stats.load_us / 1000.0,
+              tex_stats.load_max_us / 1000.0, slow_frame_readback_count_,
+              slow_frame_readback_us_ / 1000.0);
+        }
+      }
+      slow_frame_log_last_ = now;
+      slow_frame_readback_count_ = 0;
+      slow_frame_readback_us_ = 0;
     }
     frame_open_ = false;
     if (renderdoc_capturing_) {

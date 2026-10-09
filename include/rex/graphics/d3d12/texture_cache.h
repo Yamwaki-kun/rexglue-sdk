@@ -13,6 +13,7 @@
 
 #include <array>
 #include <functional>
+#include <map>
 #include <memory>
 #include <unordered_map>
 #include <utility>
@@ -267,6 +268,13 @@ class D3D12TextureCache final : public TextureCache {
     void AddSRVDescriptorIndex(SRVDescriptorKey descriptor_key, uint32_t descriptor_index) {
       srv_descriptors_.emplace(descriptor_key, descriptor_index);
     }
+    // Placement in one of the texture cache's heaps (d3d12_texture_placed_heaps),
+    // released back to the allocator when the texture is destroyed.
+    void SetPlacedAllocation(uint32_t heap_index, uint64_t offset, uint64_t size) {
+      placed_heap_index_ = heap_index;
+      placed_offset_ = offset;
+      placed_size_ = size;
+    }
 
    private:
     Microsoft::WRL::ComPtr<ID3D12Resource> resource_;
@@ -278,7 +286,24 @@ class D3D12TextureCache final : public TextureCache {
     // according to profiling, was often a bottleneck in many games).
     // For bindless - indices in the global shader-visible descriptor heap.
     std::unordered_map<SRVDescriptorKey, uint32_t, SRVDescriptorKey::Hasher> srv_descriptors_;
+    uint32_t placed_heap_index_ = UINT32_MAX;
+    uint64_t placed_offset_ = 0;
+    uint64_t placed_size_ = 0;
   };
+
+  // Sub-allocation of texture resources in large heaps: one kernel allocation
+  // per heap instead of one per texture (CreateCommittedResource), which made
+  // frames that stream in hundreds of textures take hundreds of milliseconds.
+  struct PlacedTextureHeap {
+    Microsoft::WRL::ComPtr<ID3D12Heap> heap;
+    // Free ranges: offset -> size, coalesced.
+    std::map<uint64_t, uint64_t> free_ranges;
+  };
+  static constexpr uint64_t kPlacedTextureHeapSize = uint64_t(64) << 20;
+  std::vector<PlacedTextureHeap> placed_texture_heaps_;
+  bool AllocatePlacedTexture(uint64_t size, uint64_t alignment, uint32_t& heap_index_out,
+                             uint64_t& offset_out);
+  void FreePlacedTexture(uint32_t heap_index, uint64_t offset, uint64_t size);
 
   static constexpr uint32_t kSRVDescriptorCachePageSize = 65536;
 
