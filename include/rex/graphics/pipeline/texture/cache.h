@@ -538,6 +538,9 @@ class TextureCache {
   // this will cause another attempt to create a texture or to untile it if
   // there was an error.
   void ResetTextureBindings(bool from_destructor = false);
+  // Like ResetTextureBindings, but only for bindings whose texture (unsigned
+  // or signed) has a non-zero outdated mask.
+  void ResetOutdatedTextureBindings();
 
   const TextureBinding* GetValidTextureBinding(uint32_t fetch_constant_index) const {
     const TextureBinding& binding = texture_bindings_[fetch_constant_index];
@@ -561,6 +564,11 @@ class TextureCache {
                           PendingSharedMemoryRange* pending_ranges_out,
                           size_t& pending_range_count_out);
   bool CommitPreparedTextureLoad(const PendingTextureLoad& pending_load);
+
+  // Scratch for RequestTextures, persistent so that a draw does not allocate.
+  std::vector<PendingTextureLoad> request_pending_texture_loads_;
+  std::vector<PendingSharedMemoryRange> request_pending_shared_memory_ranges_;
+  std::vector<std::pair<uint32_t, uint32_t>> request_pending_range_pairs_;
 
   void UpdateTexturesTotalHostMemoryUsage(uint64_t add, uint64_t subtract);
 

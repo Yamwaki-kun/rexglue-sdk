@@ -20,6 +20,14 @@
 #include <rex/graphics/shared_memory.h>
 #include <rex/math.h>
 #include <rex/memory.h>
+#include <rex/cvar.h>
+
+REXCVAR_DEFINE_BOOL(shared_memory_hot_pages, true, "GPU",
+                    "Leave guest memory pages that the CPU rewrites every frame (dynamic "
+                    "geometry) unprotected and re-upload them once per submission, instead of "
+                    "protecting them and taking an access violation on every write. A write "
+                    "to such a page in the middle of a submission is only seen by the next "
+                    "submission.");
 
 namespace rex::graphics {
 
@@ -292,6 +300,7 @@ void SharedMemory::MakeRangeValid(uint32_t start, uint32_t length, bool written_
   uint32_t valid_block_first = valid_page_first >> 6;
   uint32_t valid_block_last = valid_page_last >> 6;
 
+  bool any_hot = false;
   {
     auto global_lock = global_critical_region_.Acquire();
 
@@ -306,13 +315,148 @@ void SharedMemory::MakeRangeValid(uint32_t start, uint32_t length, bool written_
       system_page_flags_valid_[i] |= valid_bits;
       uint64_t& gpu_written = system_page_flags_valid_and_gpu_written_[i];
       gpu_written = written_by_gpu ? (gpu_written | valid_bits) : (gpu_written & ~valid_bits);
+      if (!hot_pages_.empty()) {
+        if (written_by_gpu) {
+          // GPU-written data can't be re-read from guest memory, so it must be
+          // protected normally.
+          hot_pages_[i] &= ~valid_bits;
+        } else if (hot_pages_[i] & valid_bits) {
+          any_hot = true;
+        }
+      }
+    }
+
+    if (any_hot && memory_invalidation_callback_handle_) {
+      // Protect only the runs of pages that are not hot. Hot pages stay
+      // writable and are re-uploaded once per submission instead (see
+      // BeginSubmissionHotPages). The hot bits are read under the lock here,
+      // the protection itself is applied after releasing it, as before.
+      hot_protect_runs_.clear();
+      uint32_t run_start = UINT32_MAX;
+      for (uint32_t page = valid_page_first; page <= valid_page_last; ++page) {
+        bool hot = (hot_pages_[page >> 6] >> (page & 63)) & 1;
+        if (!hot) {
+          if (run_start == UINT32_MAX) {
+            run_start = page;
+          }
+        } else if (run_start != UINT32_MAX) {
+          hot_protect_runs_.emplace_back(run_start, page - run_start);
+          run_start = UINT32_MAX;
+        }
+      }
+      if (run_start != UINT32_MAX) {
+        hot_protect_runs_.emplace_back(run_start, valid_page_last + 1 - run_start);
+      }
     }
   }
 
   if (memory_invalidation_callback_handle_) {
-    memory().EnablePhysicalMemoryAccessCallbacks(
-        valid_page_first << page_size_log2_,
-        (valid_page_last - valid_page_first + 1) << page_size_log2_, true, false);
+    if (!any_hot) {
+      memory().EnablePhysicalMemoryAccessCallbacks(
+          valid_page_first << page_size_log2_,
+          (valid_page_last - valid_page_first + 1) << page_size_log2_, true, false);
+    } else {
+      for (const std::pair<uint32_t, uint32_t>& run : hot_protect_runs_) {
+        memory().EnablePhysicalMemoryAccessCallbacks(
+            run.first << page_size_log2_, run.second << page_size_log2_, true, false);
+      }
+    }
+  }
+}
+
+void SharedMemory::SetPageBits(std::vector<uint64_t>& bits, uint32_t page_first,
+                               uint32_t page_last) {
+  uint32_t block_first = page_first >> 6;
+  uint32_t block_last = page_last >> 6;
+  for (uint32_t i = block_first; i <= block_last; ++i) {
+    uint64_t mask = UINT64_MAX;
+    if (i == block_first) {
+      mask &= ~((uint64_t(1) << (page_first & 63)) - 1);
+    }
+    if (i == block_last && (page_last & 63) != 63) {
+      mask &= (uint64_t(1) << ((page_last & 63) + 1)) - 1;
+    }
+    bits[i] |= mask;
+  }
+}
+
+void SharedMemory::EndFrameHotPages() {
+  bool enabled = REXCVAR_GET(shared_memory_hot_pages);
+  auto global_lock = global_critical_region_.Acquire();
+  if (!enabled) {
+    if (!hot_pages_.empty()) {
+      // Turned off at runtime: drop the hot set and make those pages go
+      // through the normal upload + protect path again.
+      for (size_t i = 0; i < hot_pages_.size(); ++i) {
+        system_page_flags_valid_[i] &= ~hot_pages_[i];
+      }
+      hot_pages_.clear();
+      cpu_written_this_frame_.clear();
+      cpu_written_last_frame_.clear();
+    }
+    return;
+  }
+  if (hot_pages_.empty()) {
+    hot_pages_.assign(num_system_page_flags_, 0);
+    cpu_written_this_frame_.assign(num_system_page_flags_, 0);
+    cpu_written_last_frame_.assign(num_system_page_flags_, 0);
+    hot_frame_counter_ = 0;
+    return;
+  }
+  // Periodically forget the hot set, so pages that stopped changing (or were
+  // reused for static data) get protected again. Still-dynamic pages become hot
+  // again after two frames.
+  bool decay = ++hot_frame_counter_ >= kHotPagesDecayFrames;
+  if (decay) {
+    hot_frame_counter_ = 0;
+  }
+  uint32_t hot_count = 0;
+  for (size_t i = 0; i < hot_pages_.size(); ++i) {
+    if (decay) {
+      // Re-upload and re-protect on next use.
+      system_page_flags_valid_[i] &= ~hot_pages_[i];
+      hot_pages_[i] = 0;
+    }
+    // Written by the CPU in two consecutive frames - dynamic data.
+    hot_pages_[i] |= cpu_written_this_frame_[i] & cpu_written_last_frame_[i] &
+                     ~system_page_flags_valid_and_gpu_written_[i];
+    cpu_written_last_frame_[i] = cpu_written_this_frame_[i];
+    cpu_written_this_frame_[i] = 0;
+    hot_count += uint32_t(rex::bit_count(hot_pages_[i]));
+  }
+  COUNT_profile_set("gpu/shared_memory/hot_pages", hot_count);
+}
+
+void SharedMemory::BeginSubmissionHotPages() {
+  auto global_lock = global_critical_region_.Acquire();
+  if (hot_pages_.empty()) {
+    return;
+  }
+  // Hot pages are not protected, so CPU writes to them are not seen. Treat them
+  // as modified at the start of every submission: re-upload on the next
+  // request, and notify watchers (textures) that may have been loaded from
+  // them.
+  uint32_t run_start = UINT32_MAX;
+  uint32_t page_count = uint32_t(hot_pages_.size()) << 6;
+  for (size_t i = 0; i < hot_pages_.size(); ++i) {
+    uint64_t hot = hot_pages_[i];
+    system_page_flags_valid_[i] &= ~hot;
+    if (!hot && run_start == UINT32_MAX) {
+      continue;
+    }
+    for (uint32_t b = 0; b < 64; ++b) {
+      uint32_t page = uint32_t(i << 6) + b;
+      bool is_hot = (hot >> b) & 1;
+      if (is_hot && run_start == UINT32_MAX) {
+        run_start = page;
+      } else if (!is_hot && run_start != UINT32_MAX) {
+        FireWatches(run_start, page - 1, false);
+        run_start = UINT32_MAX;
+      }
+    }
+  }
+  if (run_start != UINT32_MAX) {
+    FireWatches(run_start, page_count - 1, false);
   }
 }
 
@@ -536,6 +680,12 @@ std::pair<uint32_t, uint32_t> SharedMemory::MemoryInvalidationCallback(
   uint32_t block_last = page_last >> 6;
 
   auto global_lock = global_critical_region_.Acquire();
+
+  // Hot page detection: remember the pages the CPU actually wrote (before the
+  // range is widened below).
+  if (REXCVAR_GET(shared_memory_hot_pages) && !cpu_written_this_frame_.empty()) {
+    SetPageBits(cpu_written_this_frame_, page_first, page_last);
+  }
 
   if (!exact_range) {
     // Check if a somewhat wider range (up to 256 KB with 4 KB pages) can be

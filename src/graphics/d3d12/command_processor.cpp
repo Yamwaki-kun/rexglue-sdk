@@ -3353,6 +3353,8 @@ bool D3D12CommandProcessor::BeginSubmission(bool is_guest_command) {
     primitive_processor_->BeginSubmission();
 
     texture_cache_->BeginSubmission(submission_current_);
+
+    shared_memory_->BeginSubmissionHotPages();
   }
 
   if (is_opening_frame) {
@@ -3516,6 +3518,9 @@ bool D3D12CommandProcessor::EndSubmission(bool is_swap) {
   if (is_closing_frame) {
     if (REXCVAR_GET(clear_memory_page_state) && shared_memory_) {
       shared_memory_->SetSystemPageBlocksValidWithGpuDataWritten();
+    }
+    if (shared_memory_) {
+      shared_memory_->EndFrameHotPages();
     }
     frame_open_ = false;
     if (renderdoc_capturing_) {

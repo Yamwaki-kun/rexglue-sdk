@@ -34,6 +34,13 @@ class SharedMemory {
   void SetSystemPageBlocksValidWithGpuDataWritten();
   void InvalidateAllPages();
 
+  // Hot pages: pages written by the CPU in consecutive frames are left
+  // unprotected and treated as modified at the start of every submission.
+  // Call EndFrameHotPages when a guest frame is closed and
+  // BeginSubmissionHotPages when a submission is opened.
+  void EndFrameHotPages();
+  void BeginSubmissionHotPages();
+
   typedef void (*GlobalWatchCallback)(const std::unique_lock<std::recursive_mutex>& global_lock,
                                       void* context, uint32_t address_first, uint32_t address_last,
                                       bool invalidated_by_gpu);
@@ -163,6 +170,17 @@ class SharedMemory {
   // Scratch for RequestRanges to sort and merge the requested ranges in,
   // persistent so that a draw does not allocate.
   std::vector<std::pair<uint32_t, uint32_t>> request_ranges_merged_;
+
+  // Hot pages (shared_memory_hot_pages), all under global_critical_region_.
+  // Empty until the first EndFrameHotPages with the cvar on.
+  static constexpr uint32_t kHotPagesDecayFrames = 120;
+  static void SetPageBits(std::vector<uint64_t>& bits, uint32_t page_first, uint32_t page_last);
+  std::vector<uint64_t> hot_pages_;
+  std::vector<uint64_t> cpu_written_this_frame_;
+  std::vector<uint64_t> cpu_written_last_frame_;
+  uint32_t hot_frame_counter_ = 0;
+  // Scratch for MakeRangeValid: (first page, page count) runs to protect.
+  std::vector<std::pair<uint32_t, uint32_t>> hot_protect_runs_;
 
   // Whether every page of the ranges is already valid. Reads the validity bits
   // without global_critical_region_: they are only written under the lock,

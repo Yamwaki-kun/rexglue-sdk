@@ -10,6 +10,7 @@
  */
 
 #include <algorithm>
+#include <atomic>
 #include <cstdint>
 #include <utility>
 
@@ -79,6 +80,10 @@ REXCVAR_DEFINE_INT32(resolution_scale, 1, "GPU",
 
 REXCVAR_DEFINE_BOOL(pre_mask_resolve_l2_block, true, "GPU",
                     "Pre-mask scaled resolve L2 blocks to the write range before iterating");
+
+REXCVAR_DEFINE_BOOL(texture_cache_selective_rebind, true, "GPU",
+                    "When a texture becomes outdated, invalidate only the bindings that "
+                    "reference an outdated texture instead of every binding");
 
 // DEFINE_int32(
 //     draw_resolution_scale_x, 1,
@@ -457,13 +462,25 @@ void TextureCache::RequestTextures(uint32_t used_texture_mask) {
     // A texture has become outdated - make sure whether textures are outdated
     // is rechecked in this draw and in subsequent ones to reload the new data
     // if needed.
-    ResetTextureBindings();
+    if (REXCVAR_GET(texture_cache_selective_rebind)) {
+      // Only bindings that reference an outdated texture need to go through
+      // FindOrCreateTexture again (which also re-decides scaled vs unscaled).
+      // The watch callback sets outdated_mask_ before raising the flag, and the
+      // flag was cleared above before this scan, so a texture outdated after
+      // the scan raises the flag again and is caught by the next request.
+      ResetOutdatedTextureBindings();
+    } else {
+      ResetTextureBindings();
+    }
   }
 
   // Update the texture keys and the textures.
   uint32_t bindings_changed = 0;
-  std::vector<PendingTextureLoad> pending_texture_loads;
-  std::vector<PendingSharedMemoryRange> pending_shared_memory_ranges;
+  std::vector<PendingTextureLoad>& pending_texture_loads = request_pending_texture_loads_;
+  std::vector<PendingSharedMemoryRange>& pending_shared_memory_ranges =
+      request_pending_shared_memory_ranges_;
+  pending_texture_loads.clear();
+  pending_shared_memory_ranges.clear();
   auto queue_pending_texture_load = [&](Texture* texture) {
     if (texture == nullptr) {
       return;
@@ -567,7 +584,9 @@ void TextureCache::RequestTextures(uint32_t used_texture_mask) {
                     uint32_t(pending_shared_memory_ranges.size()));
 
   bool batched_shared_memory_request_succeeded = true;
-  std::vector<std::pair<uint32_t, uint32_t>> pending_shared_memory_range_pairs;
+  std::vector<std::pair<uint32_t, uint32_t>>& pending_shared_memory_range_pairs =
+      request_pending_range_pairs_;
+  pending_shared_memory_range_pairs.clear();
   if (!pending_shared_memory_ranges.empty()) {
     pending_shared_memory_range_pairs.reserve(pending_shared_memory_ranges.size());
     for (const PendingSharedMemoryRange& pending_range : pending_shared_memory_ranges) {
@@ -1007,6 +1026,27 @@ void TextureCache::ResetTextureBindings(bool from_destructor) {
   }
 }
 
+void TextureCache::ResetOutdatedTextureBindings() {
+  uint32_t bindings_reset = 0;
+  for (size_t i = 0; i < texture_bindings_.size(); ++i) {
+    TextureBinding& binding = texture_bindings_[i];
+    if (!binding.key.is_valid) {
+      continue;
+    }
+    bool outdated = (binding.texture && binding.texture->outdated_mask()) ||
+                    (binding.texture_signed && binding.texture_signed->outdated_mask());
+    if (!outdated) {
+      continue;
+    }
+    binding.Reset();
+    bindings_reset |= UINT32_C(1) << i;
+  }
+  texture_bindings_in_sync_ &= ~bindings_reset;
+  if (bindings_reset) {
+    UpdateTextureBindingsImpl(bindings_reset);
+  }
+}
+
 void TextureCache::UpdateTexturesTotalHostMemoryUsage(uint64_t add, uint64_t subtract) {
   textures_total_host_memory_usage_ = textures_total_host_memory_usage_ - subtract + add;
   COUNT_profile_set(
@@ -1035,9 +1075,15 @@ bool TextureCache::IsRangeScaledResolved(uint32_t start_unscaled, uint32_t lengt
   uint32_t block_last = page_last >> 5;
   uint32_t l2_block_first = block_first >> 6;
   uint32_t l2_block_last = block_last >> 6;
-  auto global_lock = global_critical_region_.Acquire();
+  // No global_critical_region_: this runs for every texture of every draw,
+  // and the lock is contended by guest threads. The bits are only written
+  // under the lock - set by resolves on this same thread, cleared by the
+  // invalidation of a guest write, which happens before the guest submits a
+  // draw that uses the data - so the acquire loads below see a consistent
+  // enough state.
   for (uint32_t i = l2_block_first; i <= l2_block_last; ++i) {
-    uint64_t l2_block = scaled_resolve_pages_l2_[i];
+    uint64_t l2_block =
+        std::atomic_ref<uint64_t>(scaled_resolve_pages_l2_[i]).load(std::memory_order_acquire);
     if (i == l2_block_first) {
       l2_block &= ~((UINT64_C(1) << (block_first & 63)) - 1);
     }
@@ -1055,7 +1101,9 @@ bool TextureCache::IsRangeScaledResolved(uint32_t start_unscaled, uint32_t lengt
       if (block_index == block_last && (page_last & 31) != 31) {
         check_bits &= (UINT32_C(1) << ((page_last & 31) + 1)) - 1;
       }
-      if (scaled_resolve_pages_[block_index] & check_bits) {
+      if (std::atomic_ref<uint32_t>(scaled_resolve_pages_[block_index])
+              .load(std::memory_order_acquire) &
+          check_bits) {
         return true;
       }
     }
